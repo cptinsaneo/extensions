@@ -101,8 +101,10 @@ end
 
 if out then
     hunt.log(out)
+    hunt.summary("SUCCESS: Executed "..command)
     hunt.status.good()
 end
 if err and err ~= "" then 
-    hunt.error("Error: "..err)
+    hunt.summary("ERROR: "..command.." ["..err.."]")
+    hunt.error("ERROR: "..command.." ["..err.."]")
 end

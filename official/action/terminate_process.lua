@@ -139,16 +139,19 @@ if kill_process then
             out, err = hunt.process.kill_pid(proc:pid())
             if out then
                 hunt.log("SUCCESS: Killed "..proc:path().." [pid: "..proc:pid().."]")
+                hunt.summary("SUCCESS: Killed "..proc:path().." [pid: "..proc:pid().."]")
                 hunt.status.good()
                 os.execute("sleep 5")
             else 
                 hunt.error("FAILED: Could not kill "..proc:path().." [pid: "..proc:pid().."]: "..err)
+                hunt.summary("FAILED: Could not kill "..proc:path().." [pid: "..proc:pid().."]: "..err)
                 hunt.status.bad()
             end
         end
     end
     if not found then 
         hunt.log("NOT FOUND: Process with path "..path)
+        hunt.summary("NOT FOUND: Process with path "..path)
         hunt.status.low_risk()
     end 
 end
@@ -164,16 +167,20 @@ if delete_file then
     ok, err = os.remove(path)
     if ok then 
         hunt.log("SUCCESS: "..path.." was deleted.")
+        hunt.summary("SUCCESS: "..path.." was deleted.")
         hunt.status.good()
     else
         if found and err:match("No such file") then 
             hunt.error("FAILED: Could not delete "..path..": OS could not see file, you may need raw drive access to delete this file (this extension currently does not support this)")
+            hunt.summary("FAILED: Could not delete "..path..": OS could not see file, you may need raw drive access to delete this file (this extension currently does not support this)")
             hunt.status.bad()
         elseif not found then
             hunt.log("NOT FOUND: "..path)
+            hunt.summary("NOT FOUND: "..path)
             hunt.status.low_risk()
         else
             hunt.error("FAILED: "..err)
+            hunt.summary("FAILED: "..err)
             hunt.status.suspicious()
         end
     end    
