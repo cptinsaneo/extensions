@@ -219,7 +219,7 @@ Get-ChildItem "$temp\temp" -filter *Amcache*.csv | Foreach-Object {
 }
 $a | Foreach-Object { 
     if ($_.FileKeyLastWriteTimestamp) {
-        $_.FileKeyLastWriteTimestamp = Get-Date ([DateTime]$_.FileKeyLastWriteTimestamp).ToUniversalTime() -format "o"
+        $_.FileKeyLastWriteTimestamp = Get-Date ([DateTime]$_.FileKeyLastWriteTimestamp).ToUniversalTime() -format "yyyy-MM-dd hh:mm:ss"
     }
 }
 $a = $a | Sort-object FileKeyLastWriteTimestamp,sha1,fullpath -unique -Descending
